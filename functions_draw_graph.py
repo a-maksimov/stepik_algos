@@ -2,22 +2,26 @@ def draw_graph(f):
     size = 10
     step = 3
 
-    values = []
+    values = {}
     for x in range(1, size):
         value = f(x)
         if value > size - 1:
             continue
-        values.append((value, x))
+        values.setdefault(value, []).append(x)
 
     print("y ^")
     for i in range(size - 1, 0, -1):
         print(f"{i} |", end="")
+
+        value_list = values.get(i)
+        if not value_list:
+            print()
+            continue
+
         shift = 0
         j = 0
-        for pair in values:
-            if not pair[0] == i:
-                continue
-            shift = ((step * pair[1]) - 1) - shift
+        for x in value_list:
+            shift = ((step * x) - 1) - shift
             print(" " * shift + "*", end="")
             j += 1
             shift += 1
